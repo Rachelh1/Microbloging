@@ -1,0 +1,72 @@
+﻿
+<div class="row" style="margin-top:20px;">
+    <textarea id="post"></textarea>
+    <button id="submit-btn">Post</button>
+</div>
+
+<div class="row" id="post-container">
+
+</div>
+
+<link href="~/Content/emojionearea.css" rel="stylesheet" />
+<style>
+    #post-container{
+        margin-top: 20px;
+    }
+    #submit-btn{
+        margin-top:10px;
+        height: 30px;
+        width:100px;
+    }
+</style>
+@section scripts{
+    <script src="~/Scripts/emojionearea.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#post").emojioneArea({
+                autoHideFilters: true,
+                hideSource : true,
+                pickerPosition: "bottom",
+
+            });
+
+            $('#submit-btn').click(function (e) {
+
+                e.preventDefault();
+                
+                var $container = $('#post-container');
+                var $postTextInput = $('#post');
+
+                var post = $postTextInput.val();
+
+                $.ajax({
+                    url: "/home/post",
+                    type: "post",
+                    data: { post: post },
+                    success: function (data, textStatus, jqXHR) {
+                        debugger;
+                        if (data.success) {
+                            $container.append('<p>' + data.post + '</p>');
+                            $postTextInput.val('');
+                            $('.emojionearea-editor').html('');
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+ 
+                    }
+                })
+
+                
+            })
+
+            $(document).on('click','#post-container p',function () {
+                $(this).remove();
+            })
+        });
+    </script>
+
+
+}
