@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microbloging.Data;
+using Microbloging.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,7 +12,9 @@ namespace Microbloging.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+
+            var model = new PostRepository().GetAllPost();
+            return View(model);
         }
 
         public ActionResult About()
@@ -29,7 +33,11 @@ namespace Microbloging.Controllers
         [HttpPost]
         public JsonResult Post(string post)
         {
-
+            var model = new Post()
+            {
+                Message = post
+            };
+            new PostRepository().AddPost(model);
             return Json(new { success = "success",post = post }, JsonRequestBehavior.AllowGet);
         }
     }

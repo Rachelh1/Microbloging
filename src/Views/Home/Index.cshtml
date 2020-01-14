@@ -1,23 +1,88 @@
-﻿
+﻿@using Microbloging.Models;
+@using System.Linq;
+@using System.Collections.Generic;
+
+@model  List<Post>
+
 <div class="row" style="margin-top:20px;">
     <textarea id="post"></textarea>
     <button id="submit-btn">Post</button>
 </div>
 
 <div class="row" id="post-container">
+    @foreach (var item in Model)
+    {
+        <div class="row">
+            <div class="col-sm-1">
+                <div class="">
+                    <img class="img-responsive img-thumbnail     img-circle" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                </div><!-- /thumbnail -->
+            </div><!-- /col-sm-1 -->
 
+            <div class="col-sm-11">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>Alameen</strong> <span class="text-muted">commented 5 days ago</span>
+                    </div>
+                    <div class="panel-body">
+                        @item.Message
+                    </div><!-- /panel-body -->
+                    <div class="panel-footer">
+                        <a href="#">Like</a>
+                        <a href="#">comment</a>
+                        <a href="#">share</a>
+                    </div>
+                </div><!-- /panel panel-default -->
+            </div><!-- /col-sm-5 -->
+        </div><!-- /row -->
+    }
 </div>
 
 <link href="~/Content/emojionearea.css" rel="stylesheet" />
 <style>
-    #post-container{
+    #post-container {
         margin-top: 20px;
     }
-    #submit-btn{
-        margin-top:10px;
+
+    #submit-btn {
+        margin-top: 10px;
         height: 30px;
-        width:100px;
+        width: 100px;
     }
+
+    .thumbnail {
+        padding: 0px;
+    }
+
+    .panel {
+        position: relative;
+    }
+
+        .panel > .panel-heading:after, .panel > .panel-heading:before {
+            position: absolute;
+            top: 11px;
+            left: -16px;
+            right: 100%;
+            width: 0;
+            height: 0;
+            display: block;
+            content: " ";
+            border-color: transparent;
+            border-style: solid solid outset;
+            pointer-events: none;
+        }
+
+        .panel > .panel-heading:after {
+            border-width: 7px;
+            border-right-color: #f7f7f7;
+            margin-top: 1px;
+            margin-left: 2px;
+        }
+
+        .panel > .panel-heading:before {
+            border-right-color: #ddd;
+            border-width: 8px;
+        }
 </style>
 @section scripts{
     <script src="~/Scripts/emojionearea.min.js"></script>
@@ -27,7 +92,7 @@
         $(document).ready(function () {
             $("#post").emojioneArea({
                 autoHideFilters: true,
-                hideSource : true,
+                hideSource: true,
                 pickerPosition: "bottom",
 
             });
@@ -35,7 +100,7 @@
             $('#submit-btn').click(function (e) {
 
                 e.preventDefault();
-                
+
                 var $container = $('#post-container');
                 var $postTextInput = $('#post');
 
@@ -53,16 +118,15 @@
                             $('.emojionearea-editor').html('');
                         }
                     },
-                    error: function (jqXHR, textStatus, errorThrown)
-                    {
- 
+                    error: function (jqXHR, textStatus, errorThrown) {
+
                     }
                 })
 
-                
+
             })
 
-            $(document).on('click','#post-container p',function () {
+            $(document).on('click', '#post-container p', function () {
                 $(this).remove();
             })
         });
