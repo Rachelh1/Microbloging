@@ -2,6 +2,7 @@
 using Microbloging.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,9 +11,9 @@ namespace Microbloging.Controllers
 {
     public class HomeController : Controller
     {
+        [Authorize]
         public ActionResult Index()
         {
-
             var model = new PostRepository().GetAllPost();
             return View(model);
         }
@@ -30,15 +31,28 @@ namespace Microbloging.Controllers
 
             return View();
         }
+
+        [Authorize]
         [HttpPost]
-        public JsonResult Post(string post)
+        public ActionResult Post(string post, HttpPostedFileBase file)
         {
+            var imgUrl = "";
+            if (file != null)
+            {
+                var extention = file.FileName.Substring(file.FileName.LastIndexOf('.'));
+                var fileName = new Guid().ToString().Replace("-", "").Replace(" ", "") + "." + extention;
+                var path = Path.Combine(Server.MapPath("~/Content/Upload"), fileName);
+                imgUrl = @"/Content/Upload/" + fileName;
+                file.SaveAs(path);
+            }
             var model = new Post()
             {
-                Message = post
+                Message = post,
+                ImageUrl = imgUrl
             };
             new PostRepository().AddPost(model);
-            return Json(new { success = "success",post = post }, JsonRequestBehavior.AllowGet);
+
+            return PartialView("_Post", model);
         }
     }
 }

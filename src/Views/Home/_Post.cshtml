@@ -1,0 +1,29 @@
+﻿@model Post
+
+<div class="row">
+    <div class="col-sm-1">
+        <div class="">
+            <img class="img-responsive img-thumbnail     img-circle" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+        </div>
+    </div>
+
+    <div class="col-sm-11">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>Alameen</strong> <span class="text-muted">Commented 5 days ago</span>
+            </div>
+            <div class="panel-body">
+                @if(!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="Image" class="img-responsive" />
+                }
+                @Model.Message
+            </div>
+            <div class="panel-footer">
+                <a href="#" class="like-post">❤</a>
+                <a href="#" class="comment-post">💬</a>
+                <a href="#" class="share-post">🤝</a>
+            </div>
+        </div>
+    </div>
+</div>
