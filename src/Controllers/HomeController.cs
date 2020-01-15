@@ -40,7 +40,7 @@ namespace Microbloging.Controllers
             if (file != null)
             {
                 var extention = file.FileName.Substring(file.FileName.LastIndexOf('.'));
-                var fileName = new Guid().ToString().Replace("-", "").Replace(" ", "") + "." + extention;
+                var fileName = Guid.NewGuid().ToString().Replace("-", "").Replace(" ", "") + "." + extention;
                 var path = Path.Combine(Server.MapPath("~/Content/Upload"), fileName);
                 imgUrl = @"/Content/Upload/" + fileName;
                 file.SaveAs(path);
